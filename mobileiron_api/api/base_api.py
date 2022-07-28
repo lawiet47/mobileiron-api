@@ -13,6 +13,7 @@ class BaseAPI:
         self._endpoint = endpoint
         self._requests_timeout = timeout
 
+    # build basic auth
     def _build_headers(self) -> dict:
         auth_str = b64encode(bytes(f"{self._username}:{self._password}", "utf-8")).decode("ascii")
         return {
@@ -24,19 +25,19 @@ class BaseAPI:
     def _get_url(self, call_name: Optional[str]="") -> str:
         return f"https://{self._fqdn}/api/v1/{self._endpoint}"
 
+    def _build_params(self, params_str: str):
+        return f"{self._get_url()}?{params_str}"
+
     def _call(self,
               call_name: Optional[str] = "",
               http_method: str = "get",
-              params: dict = None,
+              params: str = None,
               json_value: object = None,
               header_params: dict = {}) -> requests.Response:
 
         url = self._get_url(call_name=call_name)
         headers = self._build_headers()
-        # Convert parameters because the API does not support urlencoded parameters:
-        # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/Device%20API%20Calls.htm#_Toc507757067
-        params_str = "&".join(["{0}={1}".format(str(x), str(y)) for x, y in params.items()])
-        url = f"{url}?{params_str}"
+        url = f"{url}?{params}"
         self.extend(headers, header_params)
 
         return self._execute_call(url=url,
@@ -57,7 +58,7 @@ class BaseAPI:
         elif http_method == 'put':
             response = requests.put(url, headers=headers, json=json_value, timeout=self._requests_timeout)
         elif http_method == 'delete':
-            response = requests.delete(url, headers=headers, timeout=self._requests_timeout)
+            response = requests.delete(url, headers=headers, json=json_value, timeout=self._requests_timeout)
         response.raise_for_status()
         return response
 
