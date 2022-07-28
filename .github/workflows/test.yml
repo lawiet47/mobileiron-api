@@ -33,4 +33,4 @@ jobs:
           ~/.local/bin/poetry install
       - name: Run tests
         run: |
-          ~/.local/bin/poetry run python -m pytest -v testing
+          ~/.local/bin/poetry run python -m pytest -v tests
