@@ -1,0 +1,44 @@
+name: Test Python Package
+env:
+  python_version: 3.9
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - mobileiron-api/**
+      - poetry.lock
+      - pyproject.toml
+      - .github/workflows/test.yml
+  pull_request:
+    paths:
+      - mobileiron-api/**
+      - poetry.lock
+      - pyproject.toml
+      - .github/workflows/test.yml
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout code
+        uses: actions/checkout@v2
+      -
+        name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.python_version }}
+      -
+        name: Install poetry
+        run: |
+          python -m ensurepip
+          python -m pip install --upgrade pip
+          python -m pip install poetry
+      -
+        name: Install dependencies
+        run: |
+          python -m poetry install
+      -
+        name: Run tests
+        run: |
+          python -m poetry run python -m pytest -v tests
