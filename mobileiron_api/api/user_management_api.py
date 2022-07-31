@@ -6,7 +6,7 @@ from mobileiron_api.api.helpers.filters import request_search_filter
 
 class UserManagementAPI(BaseAPI):
     def __init__(self, username: str, password: str, fqdn: str, timeout: Tuple[int, int]):
-        super(UserManagementAPI, self).__init__(username, password, fqdn, "device", timeout)
+        super(UserManagementAPI, self).__init__(username, password, fqdn, "account", timeout)
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/User%20API%20Calls.htm#_Toc507756843 {Reference Broken, to see scroll down}
     def get_user_profile_from_email(self,
@@ -15,6 +15,21 @@ class UserManagementAPI(BaseAPI):
         filters = {
             'UID': email
         }
-        params = request_search_filter('fq', filters)
+        params = request_search_filter(key='fq', params=filters)
+        response = self._call(params=params)
+        return response.json()
+
+    # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/User%20API%20Calls.htm?Highlight=UID%3D#_Toc507756843
+    # Sorting results are not implemented : ->
+    # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/MobileIron%20Cloud%20API%20Basics.htm#_Toc507756799
+    def get_user_profiles_bulk(self,
+                              rows: int = 50,
+                              start: int = 0) -> Optional[dict]:
+
+        filters = {
+            'rows': rows,
+            'start': start
+        }
+        params = request_search_filter(params=filters)
         response = self._call(params=params)
         return response.json()
