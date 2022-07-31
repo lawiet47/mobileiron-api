@@ -25,9 +25,6 @@ class BaseAPI:
     def _get_url(self, call_name: Optional[str] = None) -> str:
         return f"https://{self._fqdn}/api/v1/{self._endpoint}" if call_name is None else f"https://{self._fqdn}/api/v1/{self._endpoint}/{call_name}"
 
-    def _build_params(self, params_str: str):
-        return f"{self._get_url()}?{params_str}"
-
     def _call(self,
               call_name: Optional[str] = "",
               http_method: str = "get",
