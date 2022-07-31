@@ -2,7 +2,7 @@ from enum import Enum
 from typing import List, Any, Optional
 
 
-def request_search_filter(key: str, params: Optional[dict] = None) -> str:
+def request_search_filter(key: Optional[str] = None, params: Optional[dict] = None) -> str:
     """
     Creates a filter.
 
@@ -14,4 +14,4 @@ def request_search_filter(key: str, params: Optional[dict] = None) -> str:
     filter = "&".join(["{0}={1}".format(str(x), str(y)) for x, y in params.items()])
     print(filter)
 
-    return f"{key}={filter}"
+    return f"{key}={filter}" if key is not None else f"{filter}"
