@@ -13,7 +13,7 @@ class BaseAPI:
         self._endpoint = endpoint
         self._requests_timeout = timeout
 
-    # build basic auth
+    # build basic auth manually since auth parameter in requests is not accepted by MobileIron Cloud API
     def _build_headers(self) -> dict:
         auth_str = b64encode(bytes(f"{self._username}:{self._password}", "utf-8")).decode("ascii")
         return {
@@ -22,8 +22,8 @@ class BaseAPI:
             )
         }
 
-    def _get_url(self, call_name: Optional[str]="") -> str:
-        return f"https://{self._fqdn}/api/v1/{self._endpoint}"
+    def _get_url(self, call_name: Optional[str] = None) -> str:
+        return f"https://{self._fqdn}/api/v1/{self._endpoint}" if call_name is None else f"https://{self._fqdn}/api/v1/{self._endpoint}/{call_name}"
 
     def _build_params(self, params_str: str):
         return f"{self._get_url()}?{params_str}"
@@ -37,21 +37,24 @@ class BaseAPI:
 
         url = self._get_url(call_name=call_name)
         headers = self._build_headers()
-        url = f"{url}?{params}"
         self.extend(headers, header_params)
 
         return self._execute_call(url=url,
                                   http_method=http_method,
                                   headers=headers,
+                                  params=params,
                                   json_value=json_value)
 
     def _execute_call(self,
                       url: str,
                       http_method: str = None,
                       headers: dict = None,
+                      params: str = None,
                       json_value: object = None):
         response = None
         if http_method == 'get':
+            if params is not None:
+                url = f"{url}?{params}"
             response = requests.get(url, headers=headers, timeout=self._requests_timeout)
         elif http_method == 'post':
             response = requests.post(url, headers=headers, json=json_value, timeout=self._requests_timeout)
