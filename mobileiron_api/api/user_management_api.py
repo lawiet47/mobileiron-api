@@ -6,8 +6,8 @@ from mobileiron_api.api.helpers.helpers import convert_times
 
 
 class UserManagementAPI(BaseAPI):
-    def __init__(self, username: str, password: str, fqdn: str, timeout: Tuple[int, int]):
-        super(UserManagementAPI, self).__init__(username, password, fqdn, "account", timeout)
+    def __init__(self, username: str, password: str, fqdn: str, dmPartitionId: int, timeout: Tuple[int, int]):
+        super(UserManagementAPI, self).__init__(username, password, fqdn, "account", dmPartitionId, timeout)
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/User%20API%20Calls.htm#_Toc507756843 {Reference Broken, to see scroll down}
     def get_user_profile_from_email(self,

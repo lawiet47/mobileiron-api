@@ -6,12 +6,13 @@ import requests
 
 
 class BaseAPI:
-    def __init__(self, username: str, password: str, fqdn: str, endpoint: str, timeout: Tuple[int, int]):
+    def __init__(self, username: str, password: str, fqdn: str, endpoint: str, dmPartitionId: int, timeout: Tuple[int, int]):
         self._username = username
         self._password = password
         self._fqdn = fqdn
         self._endpoint = endpoint
         self._requests_timeout = timeout
+        self._dmPartitionId = dmPartitionId
 
     # build basic auth manually since auth parameter in requests is not accepted by MobileIron Cloud API
     def _build_headers(self) -> dict:

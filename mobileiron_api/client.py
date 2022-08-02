@@ -7,11 +7,11 @@ class MobileIronCloudAPI(object):
     device_management_api: DeviceManagementAPI
     user_management_api: UserManagementAPI
 
-    def __init__(self, username: str, password: str, fqdn: str, timeout: Tuple[int, int] = (10, 60)):
+    def __init__(self, username: str, password: str, fqdn: str, dmPartitionId: int, timeout: Tuple[int, int] = (10, 60)):
         self._username = username
         self._password = password
         self._fqdn = fqdn
-        self.device_management_api = DeviceManagementAPI(username=username, password=password, fqdn=fqdn,
+        self.device_management_api = DeviceManagementAPI(username=username, password=password, fqdn=fqdn, dmPartitionId=dmPartitionId,
                                                          timeout=timeout)
-        self.user_management_api = UserManagementAPI(username=username, password=password, fqdn=fqdn,
+        self.user_management_api = UserManagementAPI(username=username, password=password, fqdn=fqdn, dmPartitionId=dmPartitionId,
                                                      timeout=timeout)
