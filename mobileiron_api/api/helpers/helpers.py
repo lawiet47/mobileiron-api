@@ -2,10 +2,6 @@ from datetime import datetime, timedelta
 import math
 
 
-def get_digit_count(number: int):
-    return math.floor(math.log10(number)) + 1
-
-
 def to_datetime(epoch_ms: int):
     try:
         return datetime.fromtimestamp(epoch_ms/1000).strftime("%Y-%m-%dT%H:%M:%SZ")
