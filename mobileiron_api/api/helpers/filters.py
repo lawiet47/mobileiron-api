@@ -12,6 +12,5 @@ def request_search_filter(key: Optional[str] = None, params: Optional[dict] = No
     """
     # Convert parameters because the API does not support urlencoded parameters
     filter = "&".join(["{0}={1}".format(str(x), str(y)) for x, y in params.items()])
-    print(filter)
 
     return f"{key}={filter}" if key is not None else f"{filter}"
