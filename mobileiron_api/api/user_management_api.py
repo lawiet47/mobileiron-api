@@ -2,6 +2,7 @@ from mobileiron_api.api.base_api import BaseAPI
 from typing import List, Optional, Tuple
 
 from mobileiron_api.api.helpers.filters import request_search_filter
+from mobileiron_api.api.helpers.helpers import convert_times
 
 
 class UserManagementAPI(BaseAPI):
@@ -17,7 +18,7 @@ class UserManagementAPI(BaseAPI):
         }
         params = request_search_filter(key='fq', params=filters)
         response = self._call(params=params)
-        return response.json()
+        return convert_times(response.json())
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/User%20API%20Calls.htm?Highlight=UID%3D#_Toc507756843
     # Sorting results are not implemented : ->
@@ -32,4 +33,4 @@ class UserManagementAPI(BaseAPI):
         }
         params = request_search_filter(params=filters)
         response = self._call(params=params)
-        return response.json()
+        return convert_times(response.json())

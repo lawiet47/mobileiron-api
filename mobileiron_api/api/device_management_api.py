@@ -1,10 +1,11 @@
 from mobileiron_api.api.base_api import BaseAPI
 from .constants import MOBILE_IRON_SPACE_ID
-import urllib
+from datetime import datetime, timedelta
 
 from typing import List, Optional, Tuple
 
 from mobileiron_api.api.helpers.filters import request_search_filter
+from mobileiron_api.api.helpers.helpers import convert_times
 
 
 class DeviceManagementAPI(BaseAPI):
@@ -13,15 +14,15 @@ class DeviceManagementAPI(BaseAPI):
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/Device%20API%20Calls.htm#_Toc507757067
     def get_device_profile_from_email(self,
-                                   email: str,
-                                   ) -> Optional[dict]:
+                                      email: str,
+                                      ) -> Optional[dict]:
         filters = {
             'emailAddress': email,
             'dmPartitionId': MOBILE_IRON_SPACE_ID
         }
         params = request_search_filter('fq', filters)
         response = self._call(params=params)
-        return response.json()
+        return convert_times(json_data=response.json())
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/Device%20API%20Calls.htm#_Toc507757067
     def get_device_profile_from_id(self,
@@ -33,4 +34,15 @@ class DeviceManagementAPI(BaseAPI):
         }
         params = request_search_filter('fq', filters)
         response = self._call(params=params)
-        return response.json()
+        return convert_times(json_data=response.json())
+
+    def get_device_profile_from_mac(self,
+                                    wifimac: str
+                                    ) -> Optional[dict]:
+        filters = {
+            'wifiMacAddress': wifimac,
+            'dmPartitionId': MOBILE_IRON_SPACE_ID
+        }
+        params = request_search_filter('fq', filters)
+        response = self._call(params=params)
+        return convert_times(json_data=response.json())
