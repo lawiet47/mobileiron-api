@@ -27,7 +27,7 @@ class BaseAPI:
         return f"https://{self._fqdn}/api/v1/{self._endpoint}" if call_name is None else f"https://{self._fqdn}/api/v1/{self._endpoint}/{call_name}"
 
     def _call(self,
-              call_name: Optional[str] = "",
+              call_name: Optional[str] = None,
               http_method: str = "get",
               params: str = None,
               json_value: object = None,
