@@ -35,6 +35,7 @@ class DeviceManagementAPI(BaseAPI):
         response = self._call(params=params)
         return convert_times(json_data=response.json())
 
+    # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/Device%20API%20Calls.htm#_Toc507757067
     def get_device_profile_from_mac(self,
                                     wifimac: str
                                     ) -> Optional[dict]:
@@ -45,3 +46,19 @@ class DeviceManagementAPI(BaseAPI):
         params = request_search_filter('fq', filters)
         response = self._call(params=params)
         return convert_times(json_data=response.json())
+
+    # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/Device%20API%20Calls.htm#_Toc507757067
+    def get_device_profile_bulk(self,
+                                start: int = 0) -> Optional[dict]:
+        """
+        Returns the results of an XQL Query.
+        :param start: Offset which the results will be shown off of.
+        :return:  Dictionary of results
+        """
+        filters = {
+            'start': start,
+            'dmPartitionId': self._dmPartitionId
+        }
+        params = request_search_filter(params=filters)
+        response = self._call(params=params)
+        return convert_times(response.json())
