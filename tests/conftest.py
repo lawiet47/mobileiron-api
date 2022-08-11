@@ -1177,3 +1177,149 @@ def get_user_profiles_bulk():
     """
 
     return json.loads(response)
+
+
+@pytest.fixture
+def get_device_profiles_bulk():
+    response = r"""
+    {
+        "errors": null,
+        "result":
+        {
+            "totalCount": 4826,
+            "searchResults":
+            [
+                {
+                    "id": 646053305,
+                    "createdAt": "2021-10-06T12:35:24Z",
+                    "displayName": "<displayName>",
+                    "firstName": "<firstName>",
+                    "lastName": "<lastName>",
+                    "uid": "<uid>",
+                    "emailAddress": "<emailAddress>",
+                    "accountSource": "AAD",
+                    "inviteState": "Completed",
+                    "inviteResendCount": 0,
+                    "accountType": "USER",
+                    "enabled": true,
+                    "locked": false,
+                    "superUser": false,
+                    "termsAccepted": false,
+                    "bypassSaml": false,
+                    "passwordExpiresAt": "2022-10-06T12:35:24Z",
+                    "accountSettings": "null",
+                    "mutable": true,
+                    "loginFailureCount": 0,
+                    "passwordHistory": "{}",
+                    "androidWorkEmail": "<androidWorkEmail>",
+                    "androidWorkUserStatus": "ENABLED",
+                    "androidWorkRetryCount": 0,
+                    "androidWorkDeviceAccountEnabled": false,
+                    "idpUserDeleted": false,
+                    "passwordNeverExpire": false,
+                    "registrationPin":
+                    {
+                        "createdAt": null,
+                        "expiresAt": null,
+                        "pin": null,
+                        "used": false,
+                        "ppkgPinStatus": "NOT_GENERATED"
+                    },
+                    "groups":
+                    [
+                        "MDM all"
+                    ],
+                    "assignedConfigs":
+                    [
+                        {
+                            "id": null,
+                            "dmPartitionId": 111111,
+                            "name": "Password rotation policy for Laptops",
+                            "systemName": null,
+                            "description": null,
+                            "dmPartitionDistributionType": "NONE",
+                            "policyType": "PASSCODE",
+                            "policyRuleType": "NONE",
+                            "uuid": null,
+                            "enabled": false,
+                            "priority": null,
+                            "cloneable": false,
+                            "configurationMutable": false,
+                            "distributionMutable": false,
+                            "priorityMutable": false,
+                            "deletable": false,
+                            "totalDeviceCount": 0,
+                            "installedDeviceCount": 0,
+                            "violationDeviceCount": 0,
+                            "modifiedAt": null,
+                            "modifiedBy": null,
+                            "actions": null,
+                            "cloneableAcrossSpace": false,
+                            "clonedFromDefaultSpace": false,
+                            "resourceSupport":
+                            {
+                                "links":
+                                []
+                            },
+                            "systemDefault": false
+                        }
+                    ],
+                    "deviceCount": 1
+                }
+            ],
+            "offset": 0,
+            "limit": 10,
+            "queryTime": 125,
+            "facetedResults":
+            {
+                "PASSWORDEXPIRATION":
+                {
+                    "false": 1,
+                    "true": 0
+                },
+                "ACCOUNTSOURCE":
+                {
+                    "AAD": 1,
+                    "LDAP": 0,
+                    "ROSTER": 0,
+                    "SALESFORCE": 0,
+                    "SCIM_AAD": 0,
+                    "LOCAL": 0,
+                    "SCIM_OKTA": 0
+                },
+                "TERMSACCEPTED":
+                {
+                    "false": 1,
+                    "true": 0
+                },
+                "INVITESTATE":
+                {
+                    "Completed": 1,
+                    "Expired": 0,
+                    "None": 0,
+                    "Pending": 0
+                },
+                "ACCOUNTTYPE":
+                {
+                    "SUPPORT": 0,
+                    "API": 0,
+                    "PARTNER_USER": 0,
+                    "USER": 1
+                },
+                "ANDROIDWORKSTATUS":
+                {
+                    "ENABLED": 1,
+                    "ERROR": 0,
+                    "NONE": 0,
+                    "DELETED": 0
+                },
+                "ACCOUNTGROUP":
+                {
+                    "MDM all": 1
+                }
+            },
+            "totalUnfilteredResultCount": 0
+        }
+    }
+    """
+    return json.loads(response)

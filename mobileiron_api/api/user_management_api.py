@@ -1,5 +1,5 @@
 from mobileiron_api.api.base_api import BaseAPI
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Dict
 
 from mobileiron_api.api.helpers.filters import request_search_filter
 from mobileiron_api.api.helpers.helpers import convert_times
@@ -12,7 +12,7 @@ class UserManagementAPI(BaseAPI):
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/User%20API%20Calls.htm#_Toc507756843 {Reference Broken, to see scroll down}
     def get_user_profile_from_email(self,
                                    email: str,
-                                   ) -> Optional[dict]:
+                                   ) -> Optional[Dict]:
         filters = {
             'UID': email
         }
@@ -24,8 +24,8 @@ class UserManagementAPI(BaseAPI):
     # Sorting results are not implemented : ->
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/MobileIron%20Cloud%20API%20Basics.htm#_Toc507756799
     def get_user_profiles_bulk(self,
-                              rows: int = 50,
-                              start: int = 0) -> Optional[dict]:
+                              rows: int = 100,
+                              start: int = 0) -> Optional[Dict]:
 
         filters = {
             'rows': rows,
