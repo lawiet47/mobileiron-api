@@ -1,6 +1,6 @@
 name: Publish Python Package
 env:
-  python_version: 3.9
+  python_version: 3.8
 on:
   push:
     tags:
