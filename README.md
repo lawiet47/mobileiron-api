@@ -5,7 +5,7 @@ A python API for Mobile Iron Cloud
 
 
 
-    pip install moblieiron-api # supported python version > 3.9
+    pip install moblieiron-api # supported python version > 3.8
 
 
 ## Usage
