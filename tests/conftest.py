@@ -1178,7 +1178,6 @@ def get_user_profiles_bulk():
 
     return json.loads(response)
 
-
 @pytest.fixture
 def get_device_profiles_bulk():
     response = r"""
@@ -1320,6 +1319,16 @@ def get_device_profiles_bulk():
             },
             "totalUnfilteredResultCount": 0
         }
+    }
+    """
+    return json.loads(response)
+
+@pytest.fixture
+def lock_device():
+    response = r"""
+    {
+        "errors":null,
+        "result":1
     }
     """
     return json.loads(response)
