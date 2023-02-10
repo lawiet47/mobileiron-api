@@ -73,7 +73,7 @@ class DeviceManagementAPI(BaseAPI):
         :return: returns the result of the http request
         """
         ids = "&".join(["ids={0}".format(id) for id in ids])
-        params = "{0}&message={1}&osxLockPin={2}".format(ids, display_message, pin)
+        params = "{0}&message={1}&phoneNumber=osxLockPin={2}".format(ids, display_message, pin)
         response = self._call(call_name="lock", http_method="put", params=params)
         return response.json()
 
