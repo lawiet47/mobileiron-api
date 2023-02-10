@@ -57,7 +57,10 @@ class BaseAPI:
         elif http_method == 'post':
             response = requests.post(url, headers=headers, json=json_value, timeout=self._requests_timeout)
         elif http_method == 'put':
-            response = requests.put(url, headers=headers, json=json_value, timeout=self._requests_timeout)
+            if params is not None:
+                response = requests.put(url, headers=headers, params=params, json=json_value, timeout=self._requests_timeout)
+            else:
+                response = requests.put(url, headers=headers, json=json_value, timeout=self._requests_timeout)
         elif http_method == 'delete':
             response = requests.delete(url, headers=headers, json=json_value, timeout=self._requests_timeout)
         response.raise_for_status()

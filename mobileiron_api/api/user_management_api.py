@@ -1,7 +1,6 @@
 from mobileiron_api.api.base_api import BaseAPI
 from typing import List, Optional, Tuple, Dict
 
-from mobileiron_api.api.helpers.filters import request_search_filter
 from mobileiron_api.api.helpers.helpers import convert_times
 
 
@@ -13,10 +12,7 @@ class UserManagementAPI(BaseAPI):
     def get_user_profile_from_email(self,
                                    email: str,
                                    ) -> Optional[Dict]:
-        filters = {
-            'UID': email
-        }
-        params = request_search_filter(key='fq', params=filters)
+        params = 'fq=UID={0}'.format(email)
         response = self._call(params=params)
         return convert_times(response.json())
 
@@ -27,10 +23,6 @@ class UserManagementAPI(BaseAPI):
                               rows: int = 100,
                               start: int = 0) -> Optional[Dict]:
 
-        filters = {
-            'rows': rows,
-            'start': start
-        }
-        params = request_search_filter(params=filters)
+        params = "rows={0}&start={1}".format(rows, start)
         response = self._call(params=params)
         return convert_times(response.json())
