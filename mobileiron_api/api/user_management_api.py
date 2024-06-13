@@ -10,8 +10,8 @@ class UserManagementAPI(BaseAPI):
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/User%20API%20Calls.htm#_Toc507756843 {Reference Broken, to see scroll down}
     def get_user_profile_from_email(self,
-                                   email: str,
-                                   ) -> Optional[Dict]:
+                                    email: str,
+                                    ) -> Optional[Dict]:
         params = 'fq=UID={0}'.format(email)
         response = self._call(params=params)
         return convert_times(response.json())
@@ -20,9 +20,13 @@ class UserManagementAPI(BaseAPI):
     # Sorting results are not implemented : ->
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/MobileIron%20Cloud%20API%20Basics.htm#_Toc507756799
     def get_user_profiles_bulk(self,
-                              rows: int = 100,
-                              start: int = 0) -> Optional[Dict]:
+                               rows: int = 100,
+                               start: int = 0,
+                               sort: bool = True) -> Optional[Dict]:
+        params = "rows={0}&start={1}&sortFields%5B0%5D.name=id&sortFields%5B0%5D.order=ASC" if sort else ("rows={"
+                                                                                                          "0}&start={"
+                                                                                                          "1}")
+        params = params.format(rows, start)
 
-        params = "rows={0}&start={1}".format(rows, start)
         response = self._call(params=params)
         return convert_times(response.json())
