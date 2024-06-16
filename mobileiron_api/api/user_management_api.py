@@ -30,3 +30,10 @@ class UserManagementAPI(BaseAPI):
 
         response = self._call(params=params)
         return convert_times(response.json())
+
+    def delete_user_profile_from_id(self,
+                                    user_id: int,
+                                    ) -> Optional[Dict]:
+        params = 'id={0}'.format(user_id)
+        response = self._call(http_method="delete", params=params)
+        return convert_times(response.json())
