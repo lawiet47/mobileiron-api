@@ -9,8 +9,9 @@ from mobileiron_api.api.helpers.helpers import convert_times
 
 
 class DeviceManagementAPI(BaseAPI):
-    def __init__(self, username: str, password: str, fqdn: str, dmPartitionId: int, timeout: Tuple[int, int]):
-        super(DeviceManagementAPI, self).__init__(username, password, fqdn, "device", dmPartitionId, timeout)
+    def __init__(self, username: str, password: str, fqdn: str, endpoint: str, dmPartitionId: int,
+                 timeout: Tuple[int, int]):
+        super(DeviceManagementAPI, self).__init__(username, password, fqdn, endpoint, dmPartitionId, timeout)
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/Device%20API%20Calls.htm#_Toc507757067
     def get_device_profile_from_email(self,
@@ -21,7 +22,7 @@ class DeviceManagementAPI(BaseAPI):
         :return: Dictionary of the results
         """
         params = 'fq=emailAddress={0}&dmPartitionId={1}'.format(email, self._dmPartitionId)
-        response = self._call(params=params)
+        response = self._call(endpoint='device', params=params)
         return convert_times(json_data=response.json())
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/Device%20API%20Calls.htm#_Toc507757067
@@ -33,7 +34,7 @@ class DeviceManagementAPI(BaseAPI):
         :return: Dictionary of the results
         """
         params = 'fq=deviceId={0}&dmPartitionId={1}'.format(id, self._dmPartitionId)
-        response = self._call(params=params)
+        response = self._call(endpoint='device', params=params)
         return convert_times(json_data=response.json())
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/Device%20API%20Calls.htm#_Toc507757067
@@ -45,20 +46,20 @@ class DeviceManagementAPI(BaseAPI):
         :return: Dictionary of the results
         """
         params = 'fq=wifiMacAddress={0}&dmPartitionId={1}'.format(wifimac, self._dmPartitionId)
-        response = self._call(params=params)
+        response = self._call(endpoint='device', params=params)
         return convert_times(json_data=response.json())
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/Device%20API%20Calls.htm#_Toc507757067
     def get_device_profiles_bulk(self,
-                                rows: int = 100,
-                                start: int = 0) -> Optional[Dict]:
+                                 rows: int = 100,
+                                 start: int = 0) -> Optional[Dict]:
         """
         :param rows: Integer to determine how many results will be returned in a call.
         :param start: Offset which the results will be shown off of.
         :return:  Dictionary of results
         """
         params = "rows={0}&start={1}&dmPartitionId={2}".format(rows, start, self._dmPartitionId)
-        response = self._call(params=params)
+        response = self._call(endpoint='device', params=params)
         return convert_times(response.json())
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/Device%20API%20Calls.htm#_Toc507757147
@@ -74,13 +75,13 @@ class DeviceManagementAPI(BaseAPI):
         """
         ids = "&".join(["ids={0}".format(id) for id in ids])
         params = "{0}&message={1}&phoneNumber=osxLockPin={2}".format(ids, display_message, pin)
-        response = self._call(call_name="lock", http_method="put", params=params)
+        response = self._call(endpoint='device', call_name="lock", http_method="put", params=params)
         return response.json()
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/Device%20API%20Calls.htm#_Toc507757147
     def unlock_devices(self,
-                     ids: List[str]
-                     ) -> Optional[Dict]:
+                       ids: List[str]
+                       ) -> Optional[Dict]:
         """
         Locks a given number of devices.
         :param ids: IDs of the target devices to lock
@@ -88,6 +89,5 @@ class DeviceManagementAPI(BaseAPI):
         """
         ids = "&".join(["ids={0}".format(id) for id in ids])
         params = ids
-        response = self._call(call_name="unlock", http_method="put", params=params)
+        response = self._call(endpoint='device', call_name="unlock", http_method="put", params=params)
         return response.json()
-
