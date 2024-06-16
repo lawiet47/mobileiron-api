@@ -23,17 +23,19 @@ class BaseAPI:
             )
         }
 
-    def _get_url(self, call_name: Optional[str] = None) -> str:
-        return f"https://{self._fqdn}/api/v1/{self._endpoint}" if call_name is None else f"https://{self._fqdn}/api/v1/{self._endpoint}/{call_name}"
+    def _get_url(self, call_name: Optional[str] = None, endpoint: Optional[str] = None) -> str:
+        endpoint = endpoint if endpoint is not None else self._endpoint
+        return f"https://{self._fqdn}/api/v1/{endpoint}" if call_name is None else f"https://{self._fqdn}/api/v1/{endpoint}/{call_name}"
 
     def _call(self,
               call_name: Optional[str] = None,
               http_method: str = "get",
               params: str = None,
               json_value: object = None,
-              header_params: dict = {}) -> requests.Response:
+              header_params: dict = {},
+              endpoint: Optional[str] = None) -> requests.Response:
 
-        url = self._get_url(call_name=call_name)
+        url = self._get_url(call_name=call_name, endpoint=endpoint)
         headers = self._build_headers()
         self.extend(headers, header_params)
 
