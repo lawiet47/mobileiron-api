@@ -93,3 +93,29 @@ class DeviceManagementAPI(BaseAPI):
         params = ids
         response = self._call(endpoint='device', call_name="unlock", http_method="put", params=params)
         return response.json()
+
+    def retire_device(self,
+                      ids: List[str]
+                      ) -> Optional[Dict]:
+        """
+        Retires a given number of devices.
+        :param ids: IDs of the target devices to retire
+        :return: returns the result of the http request
+        """
+        ids = "&".join(["ids={0}".format(id) for id in ids])
+        params = ids
+        response = self._call(endpoint='device', call_name="retire", http_method="put", params=params)
+        return response.json()
+
+    def delete_device(self,
+                      ids: List[str]
+                      ) -> Optional[Dict]:
+        """
+        Deletes a given number of devices.
+        :param ids: IDs of the target devices to delete
+        :return: returns the result of the http request
+        """
+        ids = "&".join(["deviceIds={0}".format(id) for id in ids])
+        params = ids
+        response = self._call(endpoint='device', http_method="delete", params=params)
+        return response.json()
