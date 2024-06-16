@@ -5,8 +5,8 @@ from mobileiron_api.api.helpers.helpers import convert_times
 
 
 class UserManagementAPI(BaseAPI):
-    def __init__(self, username: str, password: str, fqdn: str, dmPartitionId: int, timeout: Tuple[int, int]):
-        super(UserManagementAPI, self).__init__(username, password, fqdn, "account", dmPartitionId, timeout)
+    def __init__(self, username: str, password: str, fqdn: str, endpoint: str, dmPartitionId: int, timeout: Tuple[int, int]):
+        super(UserManagementAPI, self).__init__(username, password, fqdn, endpoint, dmPartitionId, timeout)
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/User%20API%20Calls.htm#_Toc507756843 {Reference Broken, to see scroll down}
     def get_user_profile_from_email(self,
@@ -27,13 +27,26 @@ class UserManagementAPI(BaseAPI):
                                                                                                           "0}&start={"
                                                                                                           "1}")
         params = params.format(rows, start)
-
-        response = self._call(params=params)
+        response = self._call(endpoint='account', params=params)
         return convert_times(response.json())
 
     def delete_user_profile_from_id(self,
                                     user_id: int,
                                     ) -> Optional[Dict]:
         params = 'id={0}'.format(user_id)
-        response = self._call(http_method="delete", params=params)
+        response = self._call(endpoint='account', http_method="delete", params=params)
+        return convert_times(response.json())
+
+    def generate_user_pin(self,
+                          user_id: int,
+                          ) -> Optional[Dict]:
+        params = 'accountIds={0}'.format(user_id)
+        response = self._call(endpoint='account/regpin', http_method="post", params=params)
+        return convert_times(response.json())
+
+    def invite_user_from_id(self,
+                            user_id: int,
+                            ) -> Optional[Dict]:
+        params = 'accountIds={0}'.format(user_id)
+        response = self._call(endpoint="invite/enduser", http_method="post", params=params)
         return convert_times(response.json())
