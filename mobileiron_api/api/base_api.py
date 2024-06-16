@@ -50,9 +50,9 @@ class BaseAPI:
                       params: str = None,
                       json_value: object = None):
         response = None
+        if params is not None:
+            url = f"{url}?{params}"
         if http_method == 'get':
-            if params is not None:
-                url = f"{url}?{params}"
             response = requests.get(url, headers=headers, timeout=self._requests_timeout)
         elif http_method == 'post':
             response = requests.post(url, headers=headers, json=json_value, timeout=self._requests_timeout)
