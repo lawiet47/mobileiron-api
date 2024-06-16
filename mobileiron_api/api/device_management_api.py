@@ -52,13 +52,15 @@ class DeviceManagementAPI(BaseAPI):
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/Device%20API%20Calls.htm#_Toc507757067
     def get_device_profiles_bulk(self,
                                  rows: int = 100,
-                                 start: int = 0) -> Optional[Dict]:
+                                 start: int = 0,
+                                 sort: bool = True) -> Optional[Dict]:
         """
+        :param sort: Sorts the results by id
         :param rows: Integer to determine how many results will be returned in a call.
         :param start: Offset which the results will be shown off of.
         :return:  Dictionary of results
         """
-        params = "rows={0}&start={1}&dmPartitionId={2}".format(rows, start, self._dmPartitionId)
+        params = "rows={0}&start={1}&dmPartitionId={2}&sortFields%5B0%5D.name=id&sortFields%5B0%5D.order=ASC".format(rows, start, self._dmPartitionId) if sort else ("rows={0}&start={1}&dmPartitionId={2}".format(rows, start, self._dmPartitionId))
         response = self._call(endpoint='device', params=params)
         return convert_times(response.json())
 
