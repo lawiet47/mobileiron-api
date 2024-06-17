@@ -4,7 +4,7 @@ import pytest, json
 
 @pytest.fixture
 def mobile_iron_client():
-    return MobileIronCloudAPI("username", "password", "fqdn", 111)
+    return MobileIronCloudAPI("username", "password", "fqdn", "endpoint", 111)
 
 
 @pytest.fixture
