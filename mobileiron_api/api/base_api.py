@@ -23,17 +23,19 @@ class BaseAPI:
             )
         }
 
-    def _get_url(self, call_name: Optional[str] = None) -> str:
-        return f"https://{self._fqdn}/api/v1/{self._endpoint}" if call_name is None else f"https://{self._fqdn}/api/v1/{self._endpoint}/{call_name}"
+    def _get_url(self, call_name: Optional[str] = None, endpoint: Optional[str] = None) -> str:
+        endpoint = endpoint if endpoint is not None else self._endpoint
+        return f"https://{self._fqdn}/api/v1/{endpoint}" if call_name is None else f"https://{self._fqdn}/api/v1/{endpoint}/{call_name}"
 
     def _call(self,
               call_name: Optional[str] = None,
               http_method: str = "get",
               params: str = None,
               json_value: object = None,
-              header_params: dict = {}) -> requests.Response:
+              header_params: dict = {},
+              endpoint: Optional[str] = None) -> requests.Response:
 
-        url = self._get_url(call_name=call_name)
+        url = self._get_url(call_name=call_name, endpoint=endpoint)
         headers = self._build_headers()
         self.extend(headers, header_params)
 
@@ -49,20 +51,11 @@ class BaseAPI:
                       headers: dict = None,
                       params: str = None,
                       json_value: object = None):
-        response = None
-        if http_method == 'get':
-            if params is not None:
-                url = f"{url}?{params}"
-            response = requests.get(url, headers=headers, timeout=self._requests_timeout)
-        elif http_method == 'post':
-            response = requests.post(url, headers=headers, json=json_value, timeout=self._requests_timeout)
-        elif http_method == 'put':
-            if params is not None:
-                response = requests.put(url, headers=headers, params=params, json=json_value, timeout=self._requests_timeout)
-            else:
-                response = requests.put(url, headers=headers, json=json_value, timeout=self._requests_timeout)
-        elif http_method == 'delete':
-            response = requests.delete(url, headers=headers, json=json_value, timeout=self._requests_timeout)
+        method = getattr(requests, http_method)
+        if http_method == 'get' and params is not None:
+            url = f"{url}?{params}"
+        response = method(url, headers=headers, params=params if http_method != 'get' else None, json=json_value,
+                          timeout=self._requests_timeout)
         response.raise_for_status()
         return response
 
