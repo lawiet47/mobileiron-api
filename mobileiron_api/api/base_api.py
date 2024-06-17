@@ -51,20 +51,11 @@ class BaseAPI:
                       headers: dict = None,
                       params: str = None,
                       json_value: object = None):
-        response = None
-        if params is not None:
+        method = getattr(requests, http_method)
+        if http_method == 'get' and params is not None:
             url = f"{url}?{params}"
-        if http_method == 'get':
-            response = requests.get(url, headers=headers, timeout=self._requests_timeout)
-        elif http_method == 'post':
-            response = requests.post(url, headers=headers, json=json_value, timeout=self._requests_timeout)
-        elif http_method == 'put':
-            if params is not None:
-                response = requests.put(url, headers=headers, params=params, json=json_value, timeout=self._requests_timeout)
-            else:
-                response = requests.put(url, headers=headers, json=json_value, timeout=self._requests_timeout)
-        elif http_method == 'delete':
-            response = requests.delete(url, headers=headers, json=json_value, timeout=self._requests_timeout)
+        response = method(url, headers=headers, params=params if http_method != 'get' else None, json=json_value,
+                          timeout=self._requests_timeout)
         response.raise_for_status()
         return response
 
