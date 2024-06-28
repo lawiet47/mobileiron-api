@@ -3,7 +3,7 @@ from requests import Response
 from mobileiron_api.api.base_api import BaseAPI
 from datetime import datetime, timedelta
 
-from typing import List, Optional, Tuple, Dict
+from typing import List, Optional, Tuple, Dict, Union
 
 from mobileiron_api.api.helpers.helpers import convert_times
 
@@ -66,7 +66,7 @@ class DeviceManagementAPI(BaseAPI):
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/Device%20API%20Calls.htm#_Toc507757147
     def lock_devices(self,
-                     ids: List[str],
+                     ids: Union[str, List[str]],
                      pin: int,
                      display_message: str
                      ) -> Optional[Dict]:
@@ -75,6 +75,9 @@ class DeviceManagementAPI(BaseAPI):
         :param ids: IDs of the target devices to lock
         :return: returns the result of the http request
         """
+        if isinstance(ids, str):
+            ids = [ids]
+
         ids = "&".join(["ids={0}".format(id) for id in ids])
         params = "{0}&message={1}&phoneNumber=osxLockPin={2}".format(ids, display_message, pin)
         response = self._call(endpoint='device', call_name="lock", http_method="put", params=params)
@@ -82,39 +85,48 @@ class DeviceManagementAPI(BaseAPI):
 
     # https://help.ivanti.com/mi/help/en_us/cld/76/api/Content/MobileIronCloudCustomerIntegrationAPIGuide/Device%20API%20Calls.htm#_Toc507757147
     def unlock_devices(self,
-                       ids: List[str]
+                       ids: Union[str, List[str]]
                        ) -> Optional[Dict]:
         """
         Locks a given number of devices.
         :param ids: IDs of the target devices to lock
         :return: returns the result of the http request
         """
+        if isinstance(ids, str):
+            ids = [ids]
+
         ids = "&".join(["ids={0}".format(id) for id in ids])
         params = ids
         response = self._call(endpoint='device', call_name="unlock", http_method="put", params=params)
         return response.json()
 
     def retire_device(self,
-                      ids: List[str]
+                      ids: Union[str, List[str]]
                       ) -> Optional[Dict]:
         """
         Retires a given number of devices.
         :param ids: IDs of the target devices to retire
         :return: returns the result of the http request
         """
+        if isinstance(ids, str):
+            ids = [ids]
+
         ids = "&".join(["ids={0}".format(id) for id in ids])
         params = ids
         response = self._call(endpoint='device', call_name="retire", http_method="put", params=params)
         return response.json()
 
     def delete_device(self,
-                      ids: List[str]
+                      ids: Union[str, List[str]]
                       ) -> Optional[Dict]:
         """
         Deletes a given number of devices.
         :param ids: IDs of the target devices to delete
         :return: returns the result of the http request
         """
+        if isinstance(ids, str):
+            ids = [ids]
+
         ids = "&".join(["deviceIds={0}".format(id) for id in ids])
         params = ids
         response = self._call(endpoint='device', http_method="delete", params=params)
