@@ -3,7 +3,7 @@ from requests import Response
 from mobileiron_api.api.base_api import BaseAPI
 from datetime import datetime, timedelta
 
-from typing import List, Optional, Tuple, Dict
+from typing import List, Optional, Tuple, Dict, Union
 
 from mobileiron_api.api.helpers.helpers import convert_times
 
